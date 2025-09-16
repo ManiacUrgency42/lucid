@@ -1,0 +1,6 @@
+django
+gunicorn
+daphne
+channels
+channels-redis>=4
+redis
