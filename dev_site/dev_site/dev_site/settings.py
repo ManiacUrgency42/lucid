@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-3m8-4m+c-=v2+83)=qx_r*lb0q*&m!tkikjna4$h9)+a2-o5ki
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '44.224.125.45', 'thelucidapp.net', 'www.thelucidapp.net']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '3.128.96.159', 'thelucidapp.net', 'www.thelucidapp.net']
 
 # Required when DEBUG=False and using HTTPS; add your domains
 CSRF_TRUSTED_ORIGINS = [
