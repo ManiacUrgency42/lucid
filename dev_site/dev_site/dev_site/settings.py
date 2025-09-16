@@ -31,8 +31,6 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '3.128.96.159', 'thelucidapp.net', 'w
 CSRF_TRUSTED_ORIGINS = [
     'https://thelucidapp.net',
     'https://www.thelucidapp.net',
-    'http://thelucidapp.net',        # keep during initial HTTP test; you can remove later
-    'http://www.thelucidapp.net'
 ]
 # Application definition
 
