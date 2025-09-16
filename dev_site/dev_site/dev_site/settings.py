@@ -23,11 +23,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3m8-4m+c-=v2+83)=qx_r*lb0q*&m!tkikjna4$h9)+a2-o5ki'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '44.224.125.45', 'nanoai.us', 'www.nanoai.us']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '44.224.125.45', 'thelucidapp.net', 'www.thelucidapp.net']
 
-
+# Required when DEBUG=False and using HTTPS; add your domains
+CSRF_TRUSTED_ORIGINS = [
+    'https://thelucidapp.net',
+    'https://www.thelucidapp.net',
+    'http://thelucidapp.net',        # keep during initial HTTP test; you can remove later
+    'http://www.thelucidapp.net'
+]
 # Application definition
 
 INSTALLED_APPS = [
