@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head><title>Video Chat</title></head>
+<body>
+  <video id="localVideo" autoplay muted></video>
+  <video id="remoteVideo" autoplay></video>
+
+  <script>
+    const localVideo = document.getElementById('localVideo');
+    const remoteVideo = document.getElementById('remoteVideo');
+    let pc;
+    const roomName = "demo-room";  // change or generate dynamically
+    const ws = new WebSocket(
+      `wss://${window.location.host}/ws/signaling/${roomName}/`
+    );
+
+    const config = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then(stream => {
+        localVideo.srcObject = stream;
+        pc = new RTCPeerConnection(config);
+        stream.getTracks().forEach(t => pc.addTrack(t, stream));
+
+        pc.onicecandidate = e => {
+          if (e.candidate) ws.send(JSON.stringify({ type: 'ice', candidate: e.candidate }));
+        };
+        pc.ontrack = e => { remoteVideo.srcObject = e.streams[0]; };
+
+        ws.onopen = () => {
+          if (pc.signalingState === 'stable') createOffer();
+        };
+      }).catch(console.error);
+
+    ws.onmessage = async ({ data }) => {
+      const msg = JSON.parse(data);
+      if (msg.type === 'offer') {
+        await pc.setRemoteDescription(msg);
+        const ans = await pc.createAnswer();
+        await pc.setLocalDescription(ans);
+        ws.send(JSON.stringify(ans));
+      }
+      else if (msg.type === 'answer') {
+        await pc.setRemoteDescription(msg);
+      }
+      else if (msg.type === 'ice') {
+        try { await pc.addIceCandidate(msg.candidate); }
+        catch(e){ console.error(e); }
+      }
+    };
+
+    async function createOffer() {
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+      ws.send(JSON.stringify(offer));
+    }
+  </script>
+</body>
+</html>
